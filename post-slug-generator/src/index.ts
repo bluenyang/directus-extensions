@@ -1,8 +1,8 @@
 import { defineHook } from '@directus/extensions-sdk';
 
-export default defineHook(({ filter, _ }) => {
-	filter('posts.items.create', autoGenerateSlug);
-	filter('posts.items.update', autoGenerateSlug);
+export default defineHook(({ filter }) => {
+  filter('posts.items.create', autoGenerateSlug);
+  filter('posts.items.update', autoGenerateSlug);
   filter('categories.items.create', autoGenerateSlug);
   filter('categories.items.update', autoGenerateSlug);
   filter('tags.items.create', autoGenerateSlug);
@@ -11,7 +11,7 @@ export default defineHook(({ filter, _ }) => {
   filter('series.items.update', autoGenerateSlug);
 });
 
-function autoGenerateSlug(payload: any, meta: any, context: any) {
+function autoGenerateSlug(payload: any, _meta: any, _context: any) {
   if (payload.title || payload.name) {
     const raw: string | undefined = payload.title ?? payload.name;
     if (!raw) return payload;

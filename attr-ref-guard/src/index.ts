@@ -1,5 +1,5 @@
 import { defineHook } from '@directus/extensions-sdk';
-import { ForbiddenError, InvalidPayloadError } from '@directus/errors';
+import { InvalidPayloadError } from '@directus/errors';
 
 export default defineHook(({ filter }, apiContext) => {
   const ATTR_REF_RULES = [
@@ -8,10 +8,9 @@ export default defineHook(({ filter }, apiContext) => {
       field: 'parent_id',
       refCollection: 'categories',
       scopeField: 'blog_id',
-      payloadScopeField: 'blog_id'
+      payloadScopeField: 'blog_id',
     },
   ];
-
 
   ATTR_REF_RULES.forEach(({ collection, field, refCollection, scopeField, payloadScopeField }) => {
     const handleEvent = async (payload: any, _meta: any, filterContext: any) => {
@@ -31,7 +30,10 @@ export default defineHook(({ filter }, apiContext) => {
       });
 
       if (!refItem || refItem[scopeField] !== payload[payloadScopeField]) {
-        throw new ForbiddenError();
+        throw new InvalidPayloadError({
+          reason:
+            'Invalid reference: The referenced item does not exist or does not belong to the same scope.',
+        });
       }
 
       return payload;

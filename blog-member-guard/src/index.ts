@@ -5,7 +5,7 @@ export default defineHook(({ filter }, apiContext) => {
   const collectionsToGuard = ['categories', 'tags', 'series'];
 
   collectionsToGuard.forEach((collection) => {
-    filter(`${collection}.items.create`, async (payload: any, meta: any, filterContext: any) => {
+    filter(`${collection}.items.create`, async (payload: any, _meta: any, filterContext: any) => {
       const currentUserId = filterContext.accountability?.user;
       if (!currentUserId) throw new ForbiddenError();
 
